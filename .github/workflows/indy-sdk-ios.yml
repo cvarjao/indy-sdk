@@ -1,0 +1,49 @@
+name: indy-sdk-ios
+
+on:
+  workflow_dispatch:
+
+env:
+  RUST_VER: 1.58.0
+  POOL_IP: "127.0.0.1"
+  DEVICE_ABIS: "arm arm64"
+  EMULATOR_ABIS: "x86 x86_64"
+
+jobs:
+  workflow-setup:
+    runs-on: ubuntu-latest
+    outputs:
+      PUBLISH_VERSION: ${{ steps.mainstep.outputs.PUBLISH_VERSION }}
+    steps:
+      - name: Git checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: ${{ env.RUST_VER }}
+      - name: Set outputs
+        id: mainstep
+        run: |
+          PUBLISH_VERSION="1.15.0"
+          echo "::set-output name=PUBLISH_VERSION::$PUBLISH_VERSION"
+  build-ios:
+    runs-on: macos-11
+    needs:
+      - workflow-setup
+    env:
+      PUBLISH_VERSION: ${{ needs.workflow-setup.outputs.PUBLISH_VERSION }}
+    steps:
+    - name: Git checkout
+      uses: actions/checkout@v2
+    - name: Build iOS wrapper
+      run: |
+          LIBINDY_POD_VERSION=${{ env.PUBLISH_VERSION }} RUST_VER=${{ env.RUST_VER }} ./ci/ga-ios-build.sh libindy "aarch64-apple-ios,x86_64-apple-ios"
+    - name: Install Dependencies
+      run: |
+        cd ./wrappers/ios/libindy-pod
+        pod install --repo-update
+#    - uses: actions/upload-artifact@v2
+#      with:
+#        name: libindy-ios-${{ env.PUBLISH_VERSION }}-universal
+#        path: ./libindy/out_pod/libindy.tar.gz
