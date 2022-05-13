@@ -43,6 +43,20 @@ jobs:
       run: |
         cd ./wrappers/ios/libindy-pod
         pod install --repo-update
+    - name: Install Dependencies
+      run: |
+        cd ./wrappers/ios/libindy-pod
+        cat << EOF > config-file
+        MARKETING_VERSION = ${{ steps.mainstep.outputs.PUBLISH_VERSION }}
+        CURRENT_PROJECT_VERSION = 99
+        CODE_SIGNING_REQUIRES_TEAM = YES
+        DEVELOPMENT_TEAM = SQ65UM6V94
+        EOF
+        cat config-file
+    - name: Install Dependencies
+      run: |
+        cd ./wrappers/ios/libindy-pod
+        xcodebuild -workspace Indy.xcworkspace -scheme Indy clean archive -configuration release -sdk iphoneos -archivePath Indy-Device.xcarchive -xcconfig config-file
 #    - uses: actions/upload-artifact@v2
 #      with:
 #        name: libindy-ios-${{ env.PUBLISH_VERSION }}-universal
