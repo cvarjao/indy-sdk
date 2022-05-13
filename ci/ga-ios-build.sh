@@ -22,7 +22,7 @@ if [ -z "${RUST_VER}" ]; then
 fi
 
 if [ -z "${OPENSSL_DIR}" ]; then
-    export OPENSSL_DIR=$(brew --prefix openssl)
+    export OPENSSL_DIR=$(brew --prefix openssl@1.1)
     echo "OPENSSL_DIR not specified, using $OPENSSL_DIR"
 fi
 
@@ -31,12 +31,17 @@ export CARGO_INCREMENTAL=1
 export POD_FILE_NAME=${package}.tar.gz
 
 rustup default ${RUST_VER}
-rustup target add aarch64-apple-ios x86_64-apple-ios
+
+targets="$2"
+for target in ${targets//,/ }
+do 
+  rustup target add "${target}"
+done
 cargo install cargo-lipo
 
 brew list libsodium &>/dev/null || brew install libsodium
 brew list zeromq &>/dev/null || brew install zeromq
-brew list openssl &>/dev/null || brew install openssl
+brew list openssl@1.1 &>/dev/null || brew install openssl@1.1
 
 echo "Build IOS POD started..."
 
@@ -45,12 +50,8 @@ TYPE="debug"
 cd ${package}
 
 if [[ $# -eq 2 ]]; then # build for single platform
-  echo "... for target $2 ..."
+  echo "... for target(s) $2 ..."
   cargo lipo --targets $2
-elif [[ $# -eq 3 ]]; then # build for two platforms
-  echo "... for targets $2,$3 ..."
-  TYPE="release"
-  cargo lipo --$TYPE --targets $2,$3
 else  # build for all platforms
   echo "... for all default targets ..."
   TYPE="release"
@@ -59,6 +60,7 @@ fi
 echo 'Build completed successfully.'
 
 WORK_DIR="out_pod"
+rm -rf $WORK_DIR
 echo "Try to create out directory: $WORK_DIR"
 mkdir $WORK_DIR
 
