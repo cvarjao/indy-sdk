@@ -27,6 +27,7 @@ jobs:
         run: |
           PUBLISH_VERSION="1.15.0"
           echo "::set-output name=PUBLISH_VERSION::$PUBLISH_VERSION"
+          echo "::set-output name=LIBINDY_CACHE_KEY::$(git rev-parse HEAD:libindy)"
   build-ios:
     runs-on: macos-11
     needs:
@@ -36,7 +37,14 @@ jobs:
     steps:
     - name: Git checkout
       uses: actions/checkout@v2
+    - name: Cache libindy
+      id: cache-libindy
+      uses: actions/cache@v3
+      with:
+        path: libindy/out_pod/libindy.tar.gz
+        key: ${{ runner.os }}-libindy-${{steps.workflow-setup.outputs.LIBINDY_CACHE_KEY}}
     - name: Build iOS wrapper
+      if: steps.cache-libindy.outputs.cache-hit != 'true'
       run: |
           LIBINDY_POD_VERSION=${{ env.PUBLISH_VERSION }} RUST_VER=${{ env.RUST_VER }} ./ci/ga-ios-build.sh libindy "aarch64-apple-ios,x86_64-apple-ios"
     - name: Install Dependencies
