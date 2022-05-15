@@ -23,11 +23,11 @@ pub struct MetricsService {
 impl MetricsService {
     pub fn new() -> Self {
         MetricsService {
-            queued_commands_count: RefCell::new([u128::MIN; COMMANDS_COUNT]),
-            queued_commands_duration_ms: RefCell::new([u128::MIN; COMMANDS_COUNT]),
+            queued_commands_count: RefCell::new([std::u128::MIN; COMMANDS_COUNT]),
+            queued_commands_duration_ms: RefCell::new([std::u128::MIN; COMMANDS_COUNT]),
 
-            executed_commands_count: RefCell::new([u128::MIN; COMMANDS_COUNT]),
-            executed_commands_duration_ms: RefCell::new([u128::MIN; COMMANDS_COUNT]),
+            executed_commands_count: RefCell::new([std::u128::MIN; COMMANDS_COUNT]),
+            executed_commands_duration_ms: RefCell::new([std::u128::MIN; COMMANDS_COUNT]),
         }
     }
 

@@ -17,7 +17,7 @@ export POD_FILE_NAME=${package}.tar.gz
 export LIBINDY_POD_VERSION=1.8.2
 
 if [ -z "${OPENSSL_DIR}" ]; then
-    export OPENSSL_DIR=/usr/local/Cellar/openssl/1.0.2q
+    export OPENSSL_DIR=$(brew --prefix openssl@1.1)
 fi
 
 echo "Build IOS POD started..."
@@ -28,7 +28,8 @@ cd ${package}
 
 if [[ $# -eq 2 ]]; then # build for single platform
   echo "... for target $2 ..."
-  cargo lipo --targets $2
+  TYPE="release"
+  cargo lipo --$TYPE  --targets $2
 elif [[ $# -eq 3 ]]; then # build for two platforms
   echo "... for targets $2,$3 ..."
   TYPE="release"
