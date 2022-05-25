@@ -15,9 +15,9 @@ rustup target add aarch64-apple-ios-sim
 export OPENSSL_DIR=$(brew --prefix openssl@1.1)
 export PKG_CONFIG_ALLOW_CROSS=1
 #cargo lipo --release
-#cargo build --target=x86_64-apple-ios --release
-#cargo build --target=aarch64-apple-ios --release
-#cargo build --target=aarch64-apple-ios-sim --release
+cargo build --target=x86_64-apple-ios --release
+cargo build --target=aarch64-apple-ios --release
+cargo build --target=aarch64-apple-ios-sim --release
 
 rm -rf IndySdk
 mkdir -p IndySdk/framework
