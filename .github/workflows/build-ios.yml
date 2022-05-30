@@ -20,7 +20,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions-rs/toolchain@v1
         with:
-          toolchain: stable
+          toolchain: "1.60.0"
           target: ${{matrix.architecture}}
       - name: brew install zeromq
         run: brew install zeromq
