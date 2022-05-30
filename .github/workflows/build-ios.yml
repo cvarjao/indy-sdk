@@ -22,6 +22,8 @@ jobs:
         with:
           toolchain: stable
           target: ${{matrix.architecture}}
+      - name: brew install zeromq
+        run: brew install zeromq
       - name: brew info openssl
         run: brew --prefix openssl@1.1
       - name: Build
