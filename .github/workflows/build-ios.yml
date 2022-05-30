@@ -18,11 +18,17 @@ jobs:
 #        architecture: [aarch64-apple-ios, aarch64-apple-ios-sim, x86_64-apple-ios]
     steps:
       - uses: actions/checkout@v2
-      - uses: actions-rs/cargo@v1
+      - uses: actions-rs/toolchain@v1
         with:
-          use-cross: true
-          command: build
-          args: --manifest-path libindy/Cargo.toml --target ${{matrix.architecture}} --release --all-features
+          toolchain: stable
+          target: ${{matrix.architecture}}
+      - name: Build
+        run: cargo build --manifest-path libindy/Cargo.toml --target ${{matrix.architecture}} --release --all-features
+#      - uses: actions-rs/cargo@v1
+#        with:
+#          use-cross: true
+#          command: build
+#          args: --manifest-path libindy/Cargo.toml --target ${{matrix.architecture}} --release --all-features
       - name: Save static library
         uses: actions/upload-artifact@v3
         with:
