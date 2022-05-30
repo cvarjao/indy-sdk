@@ -1,0 +1,65 @@
+name: build-ios
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+env:
+  LIB_NAME: libindy
+  HEADER_FILE: libindy/include
+  PACKAGE: indy-vdr
+
+jobs:
+  build_ios:
+    name: build ios xcframework
+    runs-on: macos-latest
+    strategy:
+      matrix:
+        architecture: [aarch64-apple-ios, aarch64-apple-ios-sim, x86_64-apple-ios]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions-rs/cargo@v1
+        working-directory: libindy
+        with:
+          use-cross: true
+          command: build
+          args: --target ${{matrix.architecture}} --release --all-features
+      - name: Save static library
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ matrix.architecture}}
+          path: libindy/target/${{ matrix.architecture }}/release/${{ env.LIB_NAME }}.a
+
+  create_ios_xcframework:
+    name: Create ios xcframework
+    runs-on: macos-latest
+    needs: build_ios
+    steps:
+      - uses: actions/checkout@v2
+      - name: Fetch static libraries
+        uses: actions/download-artifact@v3
+      - run: >
+          lipo -create aarch64-apple-ios-sim/${{ env.LIB_NAME }}.a \
+                       x86_64-apple-ios/${{ env.LIB_NAME }}.a \
+               -output ${{ env.LIB_NAME }}.a
+      - run: >
+          xcodebuild -create-xcframework \
+            -library aarch64-apple-ios/lib${{ env.LIB_NAME }}.a -headers ${{ env.HEADER_FILE }} \
+            -library ${{ env.LIB_NAME }}.a                   -headers ${{ env.HEADER_FILE }} \
+            -output ${{ env.LIB_NAME }}.xcframework
+#      - name: Save xcframework
+#        uses: actions/upload-artifact@v3
+#        with:
+#          name: ${{ LIB_NAME }}.xcframework
+#          path: ${{ LIB_NAME }}.xcframework
+#      - uses: geekyeggo/delete-artifact@v1
+#        with:
+#          name: |
+#            aarch64-apple-ios
+#            aarch64-apple-ios-sim
+#            x86_64-apple-ios
+#          failOnError: false
