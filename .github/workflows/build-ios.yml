@@ -12,6 +12,9 @@ jobs:
   build_ios:
     name: build ios xcframework
     runs-on: macos-latest
+    defaults:
+      run:
+        working-directory: libindy
     strategy:
       matrix:
         architecture: [aarch64-apple-ios, aarch64-apple-ios-sim, x86_64-apple-ios]
@@ -22,7 +25,6 @@ jobs:
           use-cross: true
           command: build
           args: --target ${{matrix.architecture}} --release --all-features
-          working-directory: libindy
       - name: Save static library
         uses: actions/upload-artifact@v3
         with:
