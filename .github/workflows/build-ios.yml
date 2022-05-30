@@ -22,7 +22,11 @@ jobs:
         with:
           toolchain: stable
           target: ${{matrix.architecture}}
+      - name: brew info openssl
+        run: brew --prefix openssl@1.1
       - name: Build
+        env:
+            PKG_CONFIG_ALLOW_CROSS: 1
         run: cargo build --manifest-path libindy/Cargo.toml --target ${{matrix.architecture}} --release --all-features
 #      - uses: actions-rs/cargo@v1
 #        with:
