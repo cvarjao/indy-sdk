@@ -59,7 +59,7 @@ jobs:
                -output ${{ env.LIB_NAME }}.a
       - run: >
           xcodebuild -create-xcframework \
-            -library aarch64-apple-ios/lib${{ env.LIB_NAME }}.a -headers ${{ env.HEADER_FILE }} \
+            -library aarch64-apple-ios/${{ env.LIB_NAME }}.a -headers ${{ env.HEADER_FILE }} \
             -library ${{ env.LIB_NAME }}.a                   -headers ${{ env.HEADER_FILE }} \
             -output ${{ env.LIB_NAME }}.xcframework
 #      - name: Save xcframework
