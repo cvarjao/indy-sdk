@@ -20,7 +20,9 @@ jobs:
       - name: Set outputs
         id: mainstep
         run: |
-          echo "::set-output name=LIBINDY_CACHE_KEY::$(git rev-parse HEAD:libindy)"
+          LIBINDY_CACHE_KEY=$(git rev-parse HEAD:libindy)
+          echo "LIBINDY_CACHE_KEY=$LIBINDY_CACHE_KEY"
+          echo "::set-output name=LIBINDY_CACHE_KEY::$LIBINDY_CACHE_KEY"
   build_ios:
     name: build
     runs-on: macos-latest
