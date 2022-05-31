@@ -37,11 +37,7 @@ jobs:
         id: cargo-cache
         with:
           path: |
-            ~/.cargo/bin/
-            ~/.cargo/registry/index/
-            ~/.cargo/registry/cache/
-            ~/.cargo/git/db/
-            target/
+            libindy/target/${{matrix.architecture}}/release/${{ env.LIB_NAME }}.a
           key: ${{ runner.os }}-cargo-${{matrix.architecture}}-${{needs.workflow-setup.outputs.LIBINDY_CACHE_KEY}}
       - uses: actions/checkout@v2
         if: steps.cargo-cache.outputs.cache-hit != 'true'
