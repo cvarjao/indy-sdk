@@ -13,12 +13,10 @@ jobs:
     name: workflow setup
     runs-on: ubuntu-latest
     outputs:
-      PUBLISH_VERSION: ${{ steps.mainstep.outputs.PUBLISH_VERSION }}
+      LIBINDY_CACHE_KEY: ${{ steps.mainstep.outputs.LIBINDY_CACHE_KEY }}
     steps:
       - name: Git checkout
         uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
       - name: Set outputs
         id: mainstep
         run: |
