@@ -32,7 +32,6 @@ jobs:
         architecture: [aarch64-apple-ios, aarch64-apple-ios-sim, x86_64-apple-ios]
 #        architecture: [aarch64-apple-ios, aarch64-apple-ios-sim, x86_64-apple-ios]
     steps:
-      - uses: actions/checkout@v2
       - name: Cache build
         uses: actions/cache@v3
         id: cargo-cache
@@ -44,10 +43,8 @@ jobs:
             ~/.cargo/git/db/
             target/
           key: ${{ runner.os }}-cargo-${{matrix.architecture}}-${{needs.workflow-setup.outputs.LIBINDY_CACHE_KEY}}
-#      - uses: actions-rs/toolchain@v1
-#        with:
-#          toolchain: "1.60.0"
-#          target: ${{matrix.architecture}}
+      - uses: actions/checkout@v2
+        if: steps.cargo-cache.outputs.cache-hit != 'true'
       - name: brew install zeromq
         if: steps.cargo-cache.outputs.cache-hit != 'true'
         run: brew install zeromq
@@ -63,11 +60,6 @@ jobs:
           rustup default "1.60.0"
           rustup target add ${{matrix.architecture}}
           cargo build --verbose --manifest-path libindy/Cargo.toml --target ${{matrix.architecture}} --release
-#      - uses: actions-rs/cargo@v1
-#        with:
-#          use-cross: true
-#          command: build
-#          args: --manifest-path libindy/Cargo.toml --target ${{matrix.architecture}} --release --all-features
       - name: Save static library
         uses: actions/upload-artifact@v3
         with:
