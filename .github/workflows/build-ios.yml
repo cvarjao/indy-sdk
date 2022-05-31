@@ -79,15 +79,15 @@ jobs:
             -library aarch64-apple-ios/${{ env.LIB_NAME }}.a -headers ${{ env.HEADER_FILE }} \
             -library ${{ env.LIB_NAME }}.a                   -headers ${{ env.HEADER_FILE }} \
             -output ${{ env.LIB_NAME }}.xcframework
-#      - name: Save xcframework
-#        uses: actions/upload-artifact@v3
-#        with:
-#          name: ${{ LIB_NAME }}.xcframework
-#          path: ${{ LIB_NAME }}.xcframework
-#      - uses: geekyeggo/delete-artifact@v1
-#        with:
-#          name: |
-#            aarch64-apple-ios
-#            aarch64-apple-ios-sim
-#            x86_64-apple-ios
-#          failOnError: false
+      - name: Save xcframework
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ LIB_NAME }}.xcframework
+          path: ${{ LIB_NAME }}.xcframework
+      - uses: geekyeggo/delete-artifact@v1
+        with:
+          name: |
+            aarch64-apple-ios
+            aarch64-apple-ios-sim
+            x86_64-apple-ios
+          failOnError: false
