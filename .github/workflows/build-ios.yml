@@ -9,9 +9,24 @@ env:
   PACKAGE: indy-vdr
 
 jobs:
+  workflow-setup:
+    name: workflow setup
+    runs-on: ubuntu-latest
+    outputs:
+      PUBLISH_VERSION: ${{ steps.mainstep.outputs.PUBLISH_VERSION }}
+    steps:
+      - name: Git checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Set outputs
+        id: mainstep
+        run: |
+          echo "::set-output name=LIBINDY_CACHE_KEY::$(git rev-parse HEAD:libindy)"
   build_ios:
     name: build
     runs-on: macos-latest
+    needs: workflow-setup
     strategy:
       matrix:
         architecture: [aarch64-apple-ios, aarch64-apple-ios-sim, x86_64-apple-ios]
@@ -28,7 +43,7 @@ jobs:
             ~/.cargo/registry/cache/
             ~/.cargo/git/db/
             target/
-          key: ${{ runner.os }}-cargo-${{matrix.architecture}}-${{ hashFiles('libindy/Cargo.lock') }}
+          key: ${{ runner.os }}-cargo-${{matrix.architecture}}-${{steps.workflow-setup.outputs.LIBINDY_CACHE_KEY}}
 #      - uses: actions-rs/toolchain@v1
 #        with:
 #          toolchain: "1.60.0"
