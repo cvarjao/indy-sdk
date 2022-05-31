@@ -30,7 +30,7 @@ jobs:
         env:
             PKG_CONFIG_ALLOW_CROSS: 1
             OPENSSL_DIR: /usr/local/opt/openssl@1.1
-        run: >
+        run: |
           rustup default "1.60.0"
           rustup target add ${{matrix.architecture}}
           cargo build --verbose --manifest-path libindy/Cargo.toml --target ${{matrix.architecture}} --release
