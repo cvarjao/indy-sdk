@@ -71,7 +71,7 @@ jobs:
     runs-on: macos-latest
     needs: build_ios
     steps:
-      - uses: actions/checkout@v2
+#      - uses: actions/checkout@v2
       - name: Fetch static libraries
         uses: actions/download-artifact@v3
       - run: >
