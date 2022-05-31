@@ -10,7 +10,7 @@ env:
 
 jobs:
   build_ios:
-    name: build ios
+    name: build
     runs-on: macos-latest
     strategy:
       matrix:
