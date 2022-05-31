@@ -43,7 +43,7 @@ jobs:
             ~/.cargo/registry/cache/
             ~/.cargo/git/db/
             target/
-          key: ${{ runner.os }}-cargo-${{matrix.architecture}}-${{steps.workflow-setup.outputs.LIBINDY_CACHE_KEY}}
+          key: ${{ runner.os }}-cargo-${{matrix.architecture}}-${{needs.workflow-setup.outputs.LIBINDY_CACHE_KEY}}
 #      - uses: actions-rs/toolchain@v1
 #        with:
 #          toolchain: "1.60.0"
