@@ -1,5 +1,5 @@
 #import "IndyAnoncreds.h"
-#import "indy_core.h"
+#import <libindy/indy_core.h>
 #import "NSError+IndyError.h"
 #import "IndyTypes.h"
 

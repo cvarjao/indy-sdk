@@ -16,3 +16,7 @@ Podfile.lock
 .vscode
 _build/
 /libindy/out_pod
+libindy/IndySdk
+*.xcarchive/
+NOTES.md
+*.log

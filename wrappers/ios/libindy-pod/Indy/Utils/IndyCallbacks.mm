@@ -3,7 +3,7 @@
 //  libindy
 //
 
-#include "indy_core.h"
+#import <libindy/indy_core.h>
 #import "IndyCallbacks.h"
 #import "NSError+IndyError.h"
 #import "IndyTypes.h"

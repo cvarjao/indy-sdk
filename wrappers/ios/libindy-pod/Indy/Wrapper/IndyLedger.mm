@@ -6,7 +6,7 @@
 
 #import "IndyLedger.h"
 #import "IndyCallbacks.h"
-#import "indy_core.h"
+#import <libindy/indy_core.h>
 #import "NSError+IndyError.h"
 
 @implementation IndyLedger

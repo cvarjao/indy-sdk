@@ -7,10 +7,10 @@ workspace 'Indy.xcworkspace'
 def appPods
     pod 'libsodium', "1.0.12"
     pod 'libzmq',"4.2.3"
-    pod "OpenSSL-Universal", "1.1.1500"
+    pod "OpenSSL-Universal", "1.1.1500" #OpenSSL 1.1.1o
     #pod 'OpenSSL-XM'
     pod 'libindy', :podspec => "../libindy.podspec"
-    #pod 'libindy', "1.15.0"
+    #pod 'libindy', "1.16.0"
 end
 
 target 'Indy-demo' do
@@ -48,4 +48,7 @@ post_install do |installer|
         #config.build_settings["EXCLUDED_ARCHS[sdk=*]"] = "armv7"
       end
     end
+    #installer.pods_project.build_configurations.each do |config|
+    #  config.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] = "arm64"
+    #end
 end

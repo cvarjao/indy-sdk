@@ -4,7 +4,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "indy_core.h"
+#import <libindy/indy_core.h>
 
 @interface NSError (IndyError)
 

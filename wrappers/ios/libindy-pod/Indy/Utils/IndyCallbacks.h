@@ -5,7 +5,7 @@
 
 
 #import <Foundation/Foundation.h>
-#import "indy_core.h"
+#import <libindy/indy_core.h>
 
 extern void IndyWrapperCommonCallback(indy_handle_t xcommand_handle,
         indy_error_t err);

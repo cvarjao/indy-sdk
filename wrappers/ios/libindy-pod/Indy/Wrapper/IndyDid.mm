@@ -5,7 +5,7 @@
 
 #import <libindy/indy_types.h>
 #import "IndyDid.h"
-#import "indy_mod.h"
+#import <libindy/indy_mod.h>
 #import "IndyCallbacks.h"
 
 @implementation IndyDid

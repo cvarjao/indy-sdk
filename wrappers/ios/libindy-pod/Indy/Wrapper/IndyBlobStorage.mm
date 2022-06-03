@@ -1,7 +1,7 @@
 #import <Foundation/Foundation.h>
 #import "IndyCallbacks.h"
 #import "IndyBlobStorage.h"
-#import "indy_core.h"
+#import <libindy/indy_core.h>
 #import "NSError+IndyError.h"
 
 @implementation IndyBlobStorage

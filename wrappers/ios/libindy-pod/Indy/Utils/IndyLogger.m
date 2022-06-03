@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#include "indy_core.h"
+#import <libindy/indy_core.h>
 #import "IndyLogger.h"
 
 @interface IndyLogger ()

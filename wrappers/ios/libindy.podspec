@@ -17,8 +17,13 @@ Pod::Spec.new do |s|
   s.author = { "Clécio Varjão" => "1348549+cvarjao@users.noreply.github.com" }
   s.platform = :ios, "10.0"
   s.ios.deployment_target = "10.0"
-  s.source = { :http => 'file:' + File.expand_path('../../', __dir__) + '/libindy/out_pod/libindy.tar.gz' }
-  s.source_files  = "*.h"
-  s.vendored_libraries = "*.a"
-  s.requires_arc = false
+  s.source = { :http => 'file:' + File.expand_path('../../', __dir__) + '/libindy/target/libindy.zip', :type => 'zip'}
+  #s.preserve_paths = "**/*.{h,a,m,plist}"
+  s.module_name = "libindy"
+  s.ios.vendored_frameworks = "Frameworks/libindy.xcframework"
+  s.source_files = "Frameworks/libindy.xcframework/ios-arm64/Headers/*.{h}"
+  #s.xcconfig = { 'LIBRARY_SEARCH_PATHS' => '$(PODS_ROOT)/libindy/Frameworks/libindy.xcframework/ios-arm64_x86_64-simulator'}
+  #s.vendored_libraries = "Frameworks/libindy.xcframework/ios-arm64_x86_64-simulator/*.a"
+  s.requires_arc  = true
+  s.static_framework = true
 end
