@@ -9,30 +9,38 @@ env:
   PACKAGE: indy-vdr
 
 jobs:
+  workflow-setup:
+    name: workflow setup
+    runs-on: ubuntu-latest
+    outputs:
+      LIBINDY_CACHE_KEY: ${{ steps.mainstep.outputs.LIBINDY_CACHE_KEY }}
+    steps:
+      - name: Git checkout
+        uses: actions/checkout@v2
+      - name: Set outputs
+        id: mainstep
+        run: |
+          LIBINDY_CACHE_KEY="v1-$(git rev-parse HEAD:libindy)"
+          echo "LIBINDY_CACHE_KEY=$LIBINDY_CACHE_KEY"
+          echo "::set-output name=LIBINDY_CACHE_KEY::$LIBINDY_CACHE_KEY"
   build_ios:
     name: build
     runs-on: macos-latest
+    needs: workflow-setup
     strategy:
       matrix:
         architecture: [aarch64-apple-ios, aarch64-apple-ios-sim, x86_64-apple-ios]
 #        architecture: [aarch64-apple-ios, aarch64-apple-ios-sim, x86_64-apple-ios]
     steps:
-      - uses: actions/checkout@v2
       - name: Cache build
         uses: actions/cache@v3
         id: cargo-cache
         with:
           path: |
-            ~/.cargo/bin/
-            ~/.cargo/registry/index/
-            ~/.cargo/registry/cache/
-            ~/.cargo/git/db/
-            target/
-          key: ${{ runner.os }}-cargo-${{matrix.architecture}}-${{ hashFiles('libindy/Cargo.lock') }}
-#      - uses: actions-rs/toolchain@v1
-#        with:
-#          toolchain: "1.60.0"
-#          target: ${{matrix.architecture}}
+            libindy/target/${{matrix.architecture}}/release/${{ env.LIB_NAME }}.a
+          key: ${{ runner.os }}-cargo-${{matrix.architecture}}-${{needs.workflow-setup.outputs.LIBINDY_CACHE_KEY}}
+      - uses: actions/checkout@v2
+        if: steps.cargo-cache.outputs.cache-hit != 'true'
       - name: brew install zeromq
         if: steps.cargo-cache.outputs.cache-hit != 'true'
         run: brew install zeromq
@@ -48,11 +56,6 @@ jobs:
           rustup default "1.60.0"
           rustup target add ${{matrix.architecture}}
           cargo build --verbose --manifest-path libindy/Cargo.toml --target ${{matrix.architecture}} --release
-#      - uses: actions-rs/cargo@v1
-#        with:
-#          use-cross: true
-#          command: build
-#          args: --manifest-path libindy/Cargo.toml --target ${{matrix.architecture}} --release --all-features
       - name: Save static library
         uses: actions/upload-artifact@v3
         with:
@@ -76,15 +79,15 @@ jobs:
             -library aarch64-apple-ios/${{ env.LIB_NAME }}.a -headers ${{ env.HEADER_FILE }} \
             -library ${{ env.LIB_NAME }}.a                   -headers ${{ env.HEADER_FILE }} \
             -output ${{ env.LIB_NAME }}.xcframework
-#      - name: Save xcframework
-#        uses: actions/upload-artifact@v3
-#        with:
-#          name: ${{ LIB_NAME }}.xcframework
-#          path: ${{ LIB_NAME }}.xcframework
-#      - uses: geekyeggo/delete-artifact@v1
-#        with:
-#          name: |
-#            aarch64-apple-ios
-#            aarch64-apple-ios-sim
-#            x86_64-apple-ios
-#          failOnError: false
+      - name: Save xcframework
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ LIB_NAME }}.xcframework
+          path: ${{ LIB_NAME }}.xcframework
+      - uses: geekyeggo/delete-artifact@v1
+        with:
+          name: |
+            aarch64-apple-ios
+            aarch64-apple-ios-sim
+            x86_64-apple-ios
+          failOnError: false
