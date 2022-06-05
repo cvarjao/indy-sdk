@@ -112,6 +112,9 @@ jobs:
       - name: Display structure of downloaded files
         run: ls -la
         working-directory: libindy/target
+      - name: pod install
+        run: pod install
+        working-directory: wrappers/ios/libindy-pod
       - name: Build for iphoneos
         run: xcodebuild -workspace Indy.xcworkspace -scheme Indy -configuration Release -sdk iphoneos -archivePath Indy-Device.xcarchive -verbose clean archive EXCLUDED_ARCHS=armv7
         working-directory: wrappers/ios/libindy-pod
