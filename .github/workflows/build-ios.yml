@@ -83,7 +83,7 @@ jobs:
       - name: Save xcframework
         uses: actions/upload-artifact@v3
         with:
-          name: ${{ env.LIB_NAME }}.zip
+          name: ${{ env.LIB_NAME }}
           path: ${{ env.LIB_NAME }}.zip
 #      - name: Save xcframework
 #        uses: actions/upload-artifact@v3
@@ -110,7 +110,7 @@ jobs:
           name: ${{ env.LIB_NAME }}.zip
           path: libindy/target/libindy.zip
       - name: Display structure of downloaded files
-        run: pwd; ls -la; unzip -l libindy.zip
+        run: set -x; pwd; ls -laR; unzip -l libindy.zip
         working-directory: libindy/target
       - name: pod install
         run: pod install --verbose
