@@ -110,5 +110,11 @@ jobs:
           name: ${{ env.LIB_NAME }}.zip
           path: libindy/target/libindy.zip
       - name: Display structure of downloaded files
-        run: ls -R
+        run: ls -la
         working-directory: libindy/target
+      - name: Build for iphoneos
+        run: xcodebuild -workspace Indy.xcworkspace -scheme Indy -configuration Release -sdk iphoneos -archivePath Indy-Device.xcarchive -verbose clean archive EXCLUDED_ARCHS=armv7
+        working-directory: wrappers/ios/libindy-pod
+      - name: Build for iphonesimulator
+        run: xcodebuild -workspace Indy.xcworkspace -scheme Indy -configuration Release -sdk iphonesimulator -archivePath Indy-Simulator.xcarchive -verbose clean archive "EXCLUDED_ARCHS=arm64 i386"
+        working-directory: wrappers/ios/libindy-pod
