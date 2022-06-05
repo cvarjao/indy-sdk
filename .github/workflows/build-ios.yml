@@ -108,9 +108,9 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: ${{ env.LIB_NAME }}
-          path: libindy/target/libindy.zip
+          path: libindy/target/libindy
       - name: Display structure of downloaded files
-        run: set -x; pwd; ls -laR; unzip -l libindy.zip
+        run: set -x; pwd; ls -laR; unzip -l libindy/libindy.zip
         working-directory: libindy/target
       - name: pod install
         run: pod install --verbose
