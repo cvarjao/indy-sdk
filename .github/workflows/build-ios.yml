@@ -62,8 +62,8 @@ jobs:
           name: ${{ matrix.architecture}}
           path: libindy/target/${{ matrix.architecture }}/release/${{ env.LIB_NAME }}.a
 
-  create_ios_xcframework:
-    name: Create ios xcframework
+  create_libindy_xcframework:
+    name: Build libindy xcframework
     runs-on: macos-latest
     needs: build_ios
     steps:
@@ -98,10 +98,10 @@ jobs:
             x86_64-apple-ios
           failOnError: false
 
-  create_ios_wrapper_xcframework:
-    name: Create ios xcframework
+  create_libindy_objc_xcframework:
+    name: Build indy-objc xcframework
     runs-on: macos-latest
-    needs: build_ios
+    needs: create_libindy_xcframework
     steps:
       - uses: actions/checkout@v2
       - name: Fetch static libraries
