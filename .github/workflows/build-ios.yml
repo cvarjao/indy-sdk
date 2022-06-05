@@ -79,12 +79,12 @@ jobs:
             -library aarch64-apple-ios/${{ env.LIB_NAME }}.a -headers ${{ env.HEADER_FILE }} \
             -library ${{ env.LIB_NAME }}.a                   -headers ${{ env.HEADER_FILE }} \
             -output Frameworks/${{ env.LIB_NAME }}.xcframework
-          zip -r "${{ LIB_NAME }}.zip" Frameworks/*
+          zip -r "${{ env.LIB_NAME }}.zip" Frameworks/*
       - name: Save xcframework
         uses: actions/upload-artifact@v3
         with:
-          name: ${{ LIB_NAME }}.zip
-          path: ${{ LIB_NAME }}.zip
+          name: ${{ env.LIB_NAME }}.zip
+          path: ${{ env.LIB_NAME }}.zip
 #      - name: Save xcframework
 #        uses: actions/upload-artifact@v3
 #        with:
@@ -107,7 +107,7 @@ jobs:
       - name: Fetch static libraries
         uses: actions/download-artifact@v3
         with:
-          name: ${{ LIB_NAME }}.zip
+          name: ${{ env.LIB_NAME }}.zip
           path: libindy/target/libindy.zip
       - name: Display structure of downloaded files
         run: ls -R
