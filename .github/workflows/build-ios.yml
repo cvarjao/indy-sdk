@@ -110,7 +110,7 @@ jobs:
           name: ${{ env.LIB_NAME }}
           path: libindy/target/libindy
       - name: Display structure of downloaded files
-        run: set -x; pwd; ls -laR; unzip -l libindy/libindy.zip
+        run: set -x; pwd; ls -laR; mv libindy/libindy.zip ./ ; ls -laR
         working-directory: libindy/target
       - name: pod install
         run: pod install --verbose
