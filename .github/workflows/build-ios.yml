@@ -110,10 +110,10 @@ jobs:
           name: ${{ env.LIB_NAME }}.zip
           path: libindy/target/libindy.zip
       - name: Display structure of downloaded files
-        run: ls -la
+        run: pwd; ls -la
         working-directory: libindy/target
       - name: pod install
-        run: pod install
+        run: pod install --verbose
         working-directory: wrappers/ios/libindy-pod
       - name: Build for iphoneos
         run: xcodebuild -workspace Indy.xcworkspace -scheme Indy -configuration Release -sdk iphoneos -archivePath Indy-Device.xcarchive -verbose clean archive EXCLUDED_ARCHS=armv7
