@@ -107,7 +107,7 @@ jobs:
       - name: Fetch static libraries
         uses: actions/download-artifact@v3
         with:
-          name: ${{ env.LIB_NAME }}.zip
+          name: ${{ env.LIB_NAME }}
           path: libindy/target/libindy.zip
       - name: Display structure of downloaded files
         run: set -x; pwd; ls -laR; unzip -l libindy.zip
