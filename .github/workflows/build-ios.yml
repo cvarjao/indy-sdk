@@ -80,11 +80,11 @@ jobs:
             -library ${{ env.LIB_NAME }}.a                   -headers ${{ env.HEADER_FILE }} \
             -output Frameworks/${{ env.LIB_NAME }}.xcframework
           zip -r "${{ LIB_NAME }}.zip" Frameworks/*
-     - name: Save xcframework
-       uses: actions/upload-artifact@v3
-       with:
-         name: ${{ LIB_NAME }}.zip
-         path: ${{ LIB_NAME }}.zip
+      - name: Save xcframework
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ LIB_NAME }}.zip
+          path: ${{ LIB_NAME }}.zip
 #      - name: Save xcframework
 #        uses: actions/upload-artifact@v3
 #        with:
