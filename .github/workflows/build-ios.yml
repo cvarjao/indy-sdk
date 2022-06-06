@@ -129,3 +129,9 @@ jobs:
             -framework Indy-Device.xcarchive/Products/Library/Frameworks/Indy.framework \
             -framework Indy-Simulator.xcarchive/Products/Library/Frameworks/Indy.framework \
             -output xcarchive/Frameworks/Indy.xcframework
+          cd xcarchive
+          zip -r "libindy-objc.zip" Frameworks/*
+      - name: publish artifact
+        working-directory: wrappers/ios/libindy-pod
+        run: >
+          curl -H "X-JFrog-Art-Api:${{ secrets.ARTIFACTORY_API_KEY }}" -T xcarchive/libindy-objc.zip "https://cvarjao.jfrog.io/artifactory/default-generic-local/latest/libindy-objc.zip"
