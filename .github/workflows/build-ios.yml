@@ -149,4 +149,4 @@ jobs:
         run: >
           set -x
           find . -type f -name libindy-objc.zip
-          curl -H "X-JFrog-Art-Api:${{ secrets.ARTIFACTORY_API_KEY }}" -T xcarchive/libindy-objc.zip "https://cvarjao.jfrog.io/artifactory/default-generic-local/latest/libindy-objc.zip"
+          curl -H "X-JFrog-Art-Api:${{ secrets.ARTIFACTORY_API_KEY }}" -T wrappers/ios/libindy-pod/xcarchive/libindy-objc.zip "https://cvarjao.jfrog.io/artifactory/default-generic-local/latest/libindy-objc.zip"
