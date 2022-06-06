@@ -103,25 +103,38 @@ jobs:
     runs-on: macos-latest
     needs: create_libindy_xcframework
     steps:
+      - name: Cache Package
+        uses: actions/cache@v3
+        id: libindy-objc-cache
+        with:
+          path: wrappers/ios/libindy-pod/xcarchive/libindy-objc.zip
+          key: ${{ runner.os }}-libindy-objc-${{needs.workflow-setup.outputs.LIBINDY_CACHE_KEY}}
       - uses: actions/checkout@v2
+        if: steps.libindy-objc-cache.outputs.cache-hit != 'true'
       - name: Fetch static libraries
+        if: steps.libindy-objc-cache.outputs.cache-hit != 'true'
         uses: actions/download-artifact@v3
         with:
           name: ${{ env.LIB_NAME }}
           path: libindy/target/libindy
       - name: Display structure of downloaded files
+        if: steps.libindy-objc-cache.outputs.cache-hit != 'true'
         run: set -x; pwd; ls -laR; mv libindy/libindy.zip ./ ; ls -laR
         working-directory: libindy/target
       - name: pod install
+        if: steps.libindy-objc-cache.outputs.cache-hit != 'true'
         run: pod install --verbose
         working-directory: wrappers/ios/libindy-pod
       - name: Build for iphoneos
+        if: steps.libindy-objc-cache.outputs.cache-hit != 'true'
         run: xcodebuild -workspace Indy.xcworkspace -scheme Indy -configuration Release -sdk iphoneos -archivePath Indy-Device.xcarchive -verbose clean archive EXCLUDED_ARCHS=armv7
         working-directory: wrappers/ios/libindy-pod
       - name: Build for iphonesimulator
+        if: steps.libindy-objc-cache.outputs.cache-hit != 'true'
         run: xcodebuild -workspace Indy.xcworkspace -scheme Indy -configuration Release -sdk iphonesimulator -archivePath Indy-Simulator.xcarchive -verbose clean archive "EXCLUDED_ARCHS=arm64 i386"
         working-directory: wrappers/ios/libindy-pod
       - name: package
+        if: steps.libindy-objc-cache.outputs.cache-hit != 'true'
         working-directory: wrappers/ios/libindy-pod
         run: >
           mkdir -p xcarchive/Frameworks
@@ -134,4 +147,5 @@ jobs:
       - name: publish artifact
         working-directory: wrappers/ios/libindy-pod
         run: >
+          find . -type f -name libindy-objc.zip
           curl -H "X-JFrog-Art-Api:${{ secrets.ARTIFACTORY_API_KEY }}" -T xcarchive/libindy-objc.zip "https://cvarjao.jfrog.io/artifactory/default-generic-local/latest/libindy-objc.zip"
