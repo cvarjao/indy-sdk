@@ -147,5 +147,6 @@ jobs:
       - name: publish artifact
         working-directory: wrappers/ios/libindy-pod
         run: >
+          set -x
           find . -type f -name libindy-objc.zip
           curl -H "X-JFrog-Art-Api:${{ secrets.ARTIFACTORY_API_KEY }}" -T xcarchive/libindy-objc.zip "https://cvarjao.jfrog.io/artifactory/default-generic-local/latest/libindy-objc.zip"
