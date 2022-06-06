@@ -144,6 +144,7 @@ jobs:
             -output xcarchive/Frameworks/Indy.xcframework
           cd xcarchive
           zip -r "libindy-objc.zip" Frameworks/*
+          find . -type f -name libindy-objc.zip
       - name: publish artifact
         run: |
           set -x
