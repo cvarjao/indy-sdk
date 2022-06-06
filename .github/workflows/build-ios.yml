@@ -136,7 +136,7 @@ jobs:
       - name: package
         if: steps.libindy-objc-cache.outputs.cache-hit != 'true'
         working-directory: wrappers/ios/libindy-pod
-        run: >
+        run: |
           mkdir -p xcarchive/Frameworks
           xcodebuild -create-xcframework \
             -framework Indy-Device.xcarchive/Products/Library/Frameworks/Indy.framework \
