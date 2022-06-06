@@ -127,11 +127,11 @@ jobs:
         working-directory: wrappers/ios/libindy-pod
       - name: Build for iphoneos
         if: steps.libindy-objc-cache.outputs.cache-hit != 'true'
-        run: xcodebuild -workspace Indy.xcworkspace -scheme Indy -configuration Release -sdk iphoneos -archivePath Indy-Device.xcarchive -verbose clean archive EXCLUDED_ARCHS=armv7
+        run: xcodebuild -workspace Indy.xcworkspace -scheme Indy -configuration Release -sdk iphoneos -archivePath Indy-Device.xcarchive -verbose clean archive BUILD_LIBRARY_FOR_DISTRIBUTION=YES EXCLUDED_ARCHS=armv7
         working-directory: wrappers/ios/libindy-pod
       - name: Build for iphonesimulator
         if: steps.libindy-objc-cache.outputs.cache-hit != 'true'
-        run: xcodebuild -workspace Indy.xcworkspace -scheme Indy -configuration Release -sdk iphonesimulator -archivePath Indy-Simulator.xcarchive -verbose clean archive "EXCLUDED_ARCHS=arm64 i386"
+        run: xcodebuild -workspace Indy.xcworkspace -scheme Indy -configuration Release -sdk iphonesimulator -archivePath Indy-Simulator.xcarchive -verbose clean archive BUILD_LIBRARY_FOR_DISTRIBUTION=YES "EXCLUDED_ARCHS=arm64 i386"
         working-directory: wrappers/ios/libindy-pod
       - name: package
         if: steps.libindy-objc-cache.outputs.cache-hit != 'true'
