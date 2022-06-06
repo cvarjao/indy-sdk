@@ -121,3 +121,11 @@ jobs:
       - name: Build for iphonesimulator
         run: xcodebuild -workspace Indy.xcworkspace -scheme Indy -configuration Release -sdk iphonesimulator -archivePath Indy-Simulator.xcarchive -verbose clean archive "EXCLUDED_ARCHS=arm64 i386"
         working-directory: wrappers/ios/libindy-pod
+      - name: package
+        working-directory: wrappers/ios/libindy-pod
+        run: >
+          mkdir -p xcarchive/Frameworks
+          xcodebuild -create-xcframework \
+            -framework Indy-Device.xcarchive/Products/Library/Frameworks/Indy.framework \
+            -framework Indy-Simulator.xcarchive/Products/Library/Frameworks/Indy.framework \
+            -output xcarchive/Frameworks/Indy.xcframework
